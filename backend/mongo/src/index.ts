@@ -1,14 +1,14 @@
-const express = require("express");
-const session = require("express-session");
-const mongoose = require("mongoose");
-const cookieParser = require("cookie-parser");
+import express from "express";
+import session from "express-session";
+import mongoose from "mongoose";
+import cookieParser from "cookie-parser";
 
-const passport = require("./api/passport");
-const apiBooksRouter = require("./routes/apiBookRouter");
-const uiBooksRouter = require("./routes/uiBookRouter");
-const apiUserRouter = require("./routes/apiUserRouter");
-const uiUserRouter = require("./routes/uiUserRouter");
-const uiCommentsRouter = require("./routes/uiCommentsRouter");
+import passport from "./api/passport";
+import apiBooksRouter from "./routes/apiBookRouter";
+import uiBooksRouter from "./routes/uiBookRouter";
+import apiUserRouter from "./routes/apiUserRouter";
+import uiUserRouter from "./routes/uiUserRouter";
+import uiCommentsRouter from "./routes/uiCommentsRouter";
 
 const app = express();
 
@@ -32,7 +32,7 @@ app.use("/api/books", apiBooksRouter);
 app.use("/user", uiUserRouter);
 app.use("/comments", uiCommentsRouter)
 
-const start = async (port, url) => {
+const start = async (port: number | string, url: string) => {
 	await mongoose.connect(url, {
 		dbName: "books",
 	});

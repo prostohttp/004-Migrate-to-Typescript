@@ -1,4 +1,5 @@
-import mongoose from "mongoose";
+import mongoose, {Document} from "mongoose";
+import { Book } from "../types/book";
 
 const bookSchema = new mongoose.Schema({
 	id: {
@@ -43,6 +44,6 @@ const bookSchema = new mongoose.Schema({
 	},
 });
 
-const Book = mongoose.model("Book", bookSchema);
+const Book = mongoose.model<Book & Document>("Book", bookSchema);
 
 export default Book;

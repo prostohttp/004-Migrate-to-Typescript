@@ -1,11 +1,11 @@
-import Book from "../model/Book";
+import { Book } from "../types/book";
 
 abstract class BooksRepository {
-	abstract getBooks();
-	abstract getBook(id: number)
-	abstract createBook(book: typeof Book);
-	abstract updateBook(book: typeof Book, id: number);
-	abstract deleteBook(id: number);
+	abstract getBooks(): Promise<Book[] | null>
+	abstract getBook(id: number): Promise<Book | null>
+	abstract createBook(book: Book): void;
+	abstract updateBook(book: Book, id: number): void;
+	abstract deleteBook(id: number): void;
 }
 
 export default BooksRepository;

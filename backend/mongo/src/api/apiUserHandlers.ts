@@ -1,6 +1,7 @@
-const User = require("../model/User");
+import { Response, Request } from "express";
+import { User } from "../model/User";
 
-const addUser = async (req, res) => {
+export const addHandler = async (req: Request, res: Response) => {
 	const { userName, userLogin, userPassword } = req.body;
 	const user = new User({
 		userName,
@@ -15,16 +16,16 @@ const addUser = async (req, res) => {
 		} else {
 			res.status(404).json({ error: "Такой пользователь уже существует" });
 		}
-	} catch (error) {
+	} catch (error: Error | any) {
 		res.status(500).json(error.message);
 	}
 };
 
-const loginUser = async (req, res) => {
+export const loginHandler = async (req: Request, res: Response) => {
 	res.json(req.user);
 };
 
-const profileUser = async (req, res) => {
+export const profileHandler = async (req: Request, res: Response) => {
 	const user = req.user;
 	if (!user) {
 		res.status(404).json({ error: "Пользователь не авторизован" });
@@ -33,13 +34,6 @@ const profileUser = async (req, res) => {
 	}
 };
 
-const getLogin = (req, res) => {
+export const getLoginHandler = (req: Request, res: Response) => {
 	res.send("страница с формой входа / регистрации");
-};
-
-module.exports = {
-	add: addUser,
-	login: loginUser,
-	profile: profileUser,
-	getLogin: getLogin,
 };

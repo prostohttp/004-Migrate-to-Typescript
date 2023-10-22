@@ -1,9 +1,10 @@
-const Books = require("./Books");
-const container = require("../containers/container");
+import { Request, Response } from "express";
+import Books from "./Books";
+import container from "../containers/container";
 
 const repo = container.get(Books);
 
-const getAllBooksHandler = async (_, res) => {
+export const getAllHandler = async (req: Request, res: Response) => {
 	try {
 		const books = await repo.getBooks();
 		res.json(books);
@@ -12,21 +13,21 @@ const getAllBooksHandler = async (_, res) => {
 	}
 };
 
-const getBookHandler = async (req, res) => {
+export const getHandler = async (req: Request, res: Response) => {
 	try {
 		const { id } = req.params;
-		const book = await repo.getBook(id);
+		const book = await repo.getBook(+id);
 		if (book) {
 			res.json(book);
 		} else {
 			res.status(404).json({ message: "book not found" });
 		}
-	} catch (error) {
+	} catch (error: Error | any ) {
 		res.status(500).json(error.message);
 	}
 };
 
-const addBookHandler = async (req, res) => {
+export const addHandler = async (req: Request, res: Response) => {
 	try {
 		const {
 			id,
@@ -51,25 +52,25 @@ const addBookHandler = async (req, res) => {
 			filebook,
 			originalNameFileBook,
 			originalNameFileCover,
-		};
+		} as any;
 		const newBook = await repo.createBook(book);
 		res.status(201).json(newBook);
-	} catch (error) {
+	} catch (error: Error | any) {
 		res.status(500).json(error.message);
 	}
 };
 
-const deleteBookHandler = async (req, res) => {
+export const deleteHandler = async (req: Request, res: Response) => {
 	try {
 		const { id } = req.params;
-		await repo.deleteBook(id);
+		await repo.deleteBook(+id);
 		res.status(200).json({ message: "ok" });
-	} catch (error) {
+	} catch (error: Error | any) {
 		res.status(500).json(error.message);
 	}
 };
 
-const updateBookHandler = async (req, res) => {
+export const updateHandler = async (req: Request, res: Response) => {
 	const { id } = req.params;
 	const {
 		title,
@@ -93,19 +94,11 @@ const updateBookHandler = async (req, res) => {
 		filebook,
 		originalNameFileCover,
 		originalNameFileBook,
-	};
+	} as any;
 	try {
-		repo.updateBook(book, id);
+		repo.updateBook(book, +id);
 		res.json({ message: "ok" });
-	} catch (error) {
+	} catch (error: Error | any) {
 		res.status(500).json(error.message);
 	}
-};
-
-module.exports = {
-	get: getBookHandler,
-	getAll: getAllBooksHandler,
-	add: addBookHandler,
-	delete: deleteBookHandler,
-	update: updateBookHandler,
 };

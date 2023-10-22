@@ -1,8 +1,8 @@
-const passport = require("passport");
-const LocalStrategy = require("passport-local").Strategy;
-const User = require("../model/User");
+import passport from "passport";
+import { Strategy as LocalStrategy } from "passport-local";
+import {User} from "../model/User";
 
-const verify = async (userLogin, userPassword, done) => {
+const verify = async (userLogin: string, userPassword: string, done: Function) => {
 	try {
 		const user = await User.findOne({ userLogin, userPassword }).exec();
 		if (!user) {
@@ -24,7 +24,9 @@ const options = {
 passport.use("local", new LocalStrategy(options, verify));
 
 passport.serializeUser((user, cb) => {
-	cb(null, user._id.toString());
+	if("_id" in user && user._id) {
+		cb(null, user._id.toString());
+	}
 });
 
 passport.deserializeUser(async (id, cb) => {
@@ -37,4 +39,4 @@ passport.deserializeUser(async (id, cb) => {
 	}
 });
 
-module.exports = passport;
+export default passport;

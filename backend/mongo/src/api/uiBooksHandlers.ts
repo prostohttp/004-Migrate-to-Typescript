@@ -1,6 +1,7 @@
-const Book = require("../model/Book");
+import { Request, Response } from "express";
+import Book from "../model/Book";
 
-const getAllBooksHandler = async (_, res) => {
+export const getAllHandler = async (req: Request, res: Response) => {
 	try {
 		const books = await Book.find().select("-__v");
 		res.json(books);
@@ -9,7 +10,7 @@ const getAllBooksHandler = async (_, res) => {
 	}
 };
 
-const getBookHandler = async (req, res) => {
+export const getHandler = async (req: Request, res: Response) => {
 	const { id } = req.params;
 	try {
 		const book = await Book.findById(id).select("-__v");
@@ -18,12 +19,12 @@ const getBookHandler = async (req, res) => {
 		} else {
 			res.status(404).json({ message: "book not found" });
 		}
-	} catch (error) {
+	} catch (error: Error | any) {
 		res.status(500).json(error.message);
 	}
 };
 
-const addBookHandler = async (req, res) => {
+export const addHandler = async (req: Request, res: Response) => {
 	const {
 		id,
 		title,
@@ -51,23 +52,23 @@ const addBookHandler = async (req, res) => {
 	try {
 		await book.save();
 		res.status(201).json(book);
-	} catch (error) {
+	} catch (error: Error | any) {
 		res.status(500).json(error.message);
 	}
 };
 
-const deleteBookHandler = async (req, res) => {
+export const deleteHandler = async (req: Request, res: Response) => {
 	const { id } = req.params;
 	try {
 		await Book.findByIdAndDelete(id);
 		res.status(200).json({ message: "ok" });
-	} catch (error) {
+	} catch (error: Error | any) {
 		res.status(500).json(error.message);
 	}
 };
 
-const updateBookHandler = async (req, res) => {
-	const {id} = req.params;
+export const updateHandler = async (req: Request, res: Response) => {
+	const { id } = req.params;
 	const {
 		title,
 		description,
@@ -94,20 +95,9 @@ const updateBookHandler = async (req, res) => {
 	try {
 		await Book.findByIdAndUpdate(id, book);
 		res.redirect(`/api/books/${id}`);
-	} catch (error) {
+	} catch (error: Error | any) {
 		res.status(500).json(error.message);
 	}
 };
 
-const createBookHandler = (req, res) => {
-
-}
-
-module.exports = {
-	get: getBookHandler,
-	getAll: getAllBooksHandler,
-	add: addBookHandler,
-	delete: deleteBookHandler,
-	update: updateBookHandler,
-	create: createBookHandler,
-};
+export const createHandler = (req: Request, res: Response) => {};

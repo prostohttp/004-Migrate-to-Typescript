@@ -1,18 +1,23 @@
-const express = require("express");
-const passport = require("../api/passport");
-const apiUser = require("../api/apiUserHandlers");
+import express from "express";
+import passport from "../api/passport";
+import {
+	addHandler,
+	profileHandler,
+	getLoginHandler,
+	loginHandler,
+} from "../api/apiUserHandlers";
 
 const apiUserRouter = express.Router();
 
-apiUserRouter.post("/signup", apiUser.add);
+apiUserRouter.post("/signup", addHandler);
 apiUserRouter.post(
 	"/login",
 	passport.authenticate("local", {
 		failureMessage: "Неправильный логин или пароль",
 	}),
-	apiUser.login
+	loginHandler
 );
-apiUserRouter.get("/login", apiUser.getLogin);
+apiUserRouter.get("/login", getLoginHandler);
 apiUserRouter.get(
 	"/me",
 	(req, res, next) => {
@@ -21,7 +26,7 @@ apiUserRouter.get(
 		}
 		next();
 	},
-	apiUser.profile
+	profileHandler
 );
 
-module.exports = apiUserRouter;
+export default apiUserRouter;

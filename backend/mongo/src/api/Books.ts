@@ -1,10 +1,24 @@
 import { injectable } from "inversify";
+import { Book as BookType } from "../types/book";
 import Book from "../model/Book";
 import BooksRepository from "../repositories/books.repository";
 
+interface createBookDTO {
+	id: BookType["id"];
+	title: BookType["title"];
+	description: BookType["description"];
+	authors: BookType["authors"];
+	favorite: BookType["favorite"];
+	fileName: BookType["fileName"];
+	filecover: BookType["filecover"];
+	filebook: BookType["filebook"];
+	originalNameFileCover: BookType["originalNameFileCover"];
+	originalNameFileBook: BookType["originalNameFileBook"];
+}
+
 @injectable()
 export default class Books extends BooksRepository {
-	async createBook(book: typeof Book) {
+	async createBook(book: createBookDTO) {
 		const newBook = new Book(book);
 		await newBook.save();
 		return newBook;
@@ -24,7 +38,7 @@ export default class Books extends BooksRepository {
 		await Book.findByIdAndDelete(id);
 	}
 
-	async updateBook(book: typeof Book, id: number) {
+	async updateBook(book: BookType, id: number) {
 		await Book.findByIdAndUpdate(id, book);
 	}
 }

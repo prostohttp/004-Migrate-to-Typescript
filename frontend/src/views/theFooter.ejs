@@ -1,0 +1,12 @@
+</main>
+<footer class="bg-[#ccc] py-[20px] mt-[30px]">
+  <section class="max-w-[1280px] mx-auto text-center">
+    <p>&copy; <%=  new Date().getFullYear(); %> Книги</p>
+  </section>
+</footer>
+<script>
+  const userMenuItem = document.querySelector(".auth")
+  document.cookie.includes("userId") ? userMenuItem.classList.add("hidden") : userMenuItem.classList.remove("hidden");
+</script>
+</body>
+</html>
